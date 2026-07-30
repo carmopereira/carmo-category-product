@@ -1,0 +1,54 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "create-block/carmo-category-product",
+  "version": "0.1.18",
+  "title": "Carmo Category Product",
+  "category": "widgets",
+  "icon": "slides",
+  "description": "Carousel de produtos WooCommerce filtrado por categoria, com número de colunas configurável para desktop e mobile.",
+  "example": {},
+  "attributes": {
+    "categoryId": {
+      "type": "number",
+      "default": 0
+    },
+    "columnsDesktop": {
+      "type": "number",
+      "default": 4
+    },
+    "columnsMobile": {
+      "type": "number",
+      "default": 2
+    },
+    "productsToShow": {
+      "type": "number",
+      "default": 8
+    },
+    "excerptLength": {
+      "type": "number",
+      "default": 80
+    },
+    "titleTag": {
+      "type": "string",
+      "default": "h2"
+    },
+    "hideViewCartLink": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ]
+  },
+  "textdomain": "carmo-category-product",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php",
+  "viewScript": "file:./view.js"
+}

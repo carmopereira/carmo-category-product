@@ -1,0 +1,9 @@
+/**
+ * Styles applied inside the editor only.
+ */
+
+.wp-block-create-block-carmo-category-product {
+	.carmo-carousel__collection ul {
+		scroll-snap-type: none;
+	}
+}

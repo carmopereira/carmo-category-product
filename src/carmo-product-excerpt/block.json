@@ -1,0 +1,23 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "carmo-category-product/product-excerpt",
+	"version": "0.1.0",
+	"title": "Carmo Product Excerpt",
+	"category": "woocommerce",
+	"icon": "excerpt-view",
+	"description": "Descrição do produto truncada por caracteres, sem cortar palavras a meio. Uso interno do bloco Carmo Category Product dentro do Product Collection.",
+	"usesContext": [ "postId" ],
+	"attributes": {
+		"excerptLength": {
+			"type": "number",
+			"default": 80
+		}
+	},
+	"supports": {
+		"html": false,
+		"inserter": false
+	},
+	"textdomain": "carmo-category-product",
+	"render": "file:./render.php"
+}
