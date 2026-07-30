@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Carmo Category Product
  * Description:       Adds a WooCommerce product carousel block filtered by category, with configurable columns for desktop and mobile.
- * Version:           0.1.18
+ * Version:           0.1.22
  * Requires at least: 6.8
  * Requires PHP:      7.4
  * Requires Plugins:  woocommerce

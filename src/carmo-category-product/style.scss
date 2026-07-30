@@ -12,9 +12,13 @@
 
 .carmo-carousel {
 	position: relative;
+	--carmo-nav-size: 2.25rem;
+	--carmo-viewport-gap: 0.5rem;
 
 	&__title {
-		margin: 0 0 1rem;
+		// Offset by the prev nav button + viewport gap so the title
+		// lines up with the first card.
+		margin: 0 0 1rem calc(var(--carmo-nav-size) + var(--carmo-viewport-gap));
 		font-size: 1.5rem;
 		font-weight: 600;
 		line-height: 1.3;
@@ -23,7 +27,7 @@
 	&__viewport {
 		display: flex;
 		align-items: center;
-		gap: 0.5rem;
+		gap: var(--carmo-viewport-gap);
 	}
 
 	&__collection {
@@ -181,8 +185,8 @@
 		flex: 0 0 auto;
 		align-items: center;
 		justify-content: center;
-		width: 2.25rem;
-		height: 2.25rem;
+		width: var(--carmo-nav-size);
+		height: var(--carmo-nav-size);
 		border: 1px solid rgba(0, 0, 0, 0.15);
 		border-radius: 50%;
 		background: #fff;
