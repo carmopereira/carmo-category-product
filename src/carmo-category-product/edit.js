@@ -186,7 +186,10 @@ export default function Edit( { attributes, setAttributes } ) {
 								value={ productTokens }
 								suggestions={ productSuggestions }
 								onInputChange={ setProductSearch }
-								onChange={ ( tokens ) =>
+								onChange={ ( tokens ) => {
+									// Clear the search so the suggestions list resets
+									// after a product is picked.
+									setProductSearch( '' );
 									setAttributes( {
 										productIds: [
 											...new Set(
@@ -195,8 +198,8 @@ export default function Edit( { attributes, setAttributes } ) {
 													.filter( Boolean )
 											),
 										],
-									} )
-								}
+									} );
+								} }
 								__experimentalValidateInput={ ( token ) =>
 									getTokenProductId( token ) > 0
 								}
