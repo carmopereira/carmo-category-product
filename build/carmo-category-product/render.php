@@ -60,7 +60,7 @@ $product_template_inner_blocks = array(
 		'blockName'    => 'woocommerce/product-image',
 		'attrs'        => array(
 			'showSaleBadge'           => true,
-			'imageSizing'             => 'thumbnail',
+			'imageSizing'             => 'single',
 			'isDescendentOfQueryLoop' => true,
 		),
 		'innerBlocks'  => array(

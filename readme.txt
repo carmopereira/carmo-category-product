@@ -4,7 +4,7 @@ Donate link: https://ko-fi.com/carmopereira
 Tags: woocommerce, products, carousel, block, category
 Requires at least: 6.9
 Tested up to: 7.0
-Stable tag: 0.1.22
+Stable tag: 0.1.23
 Requires PHP: 8.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -70,6 +70,11 @@ Yes, in the block settings sidebar, under "Character limit for the description."
 2. The block settings sidebar: category, columns, products to show, title tag, description length, and view-cart visibility.
 
 == Changelog ==
+
+= 0.1.23 =
+* The product image now fills the whole card, down to the bottom edge.
+* Stronger gradient at the bottom of the card so the name, price and button stay readable.
+* Uses the larger product image size for a sharper card background.
 
 = 0.1.22 =
 * Margin and padding controls on the carousel block.
