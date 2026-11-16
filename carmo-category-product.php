@@ -1,23 +1,28 @@
 <?php
 /**
  * Plugin Name:       Carmo Category Product
+ * Plugin URI:        https://github.com/carmopereira/carmo-category-product
  * Description:       Adds a WooCommerce product carousel block filtered by category, with configurable columns for desktop and mobile.
  * Version:           0.1.22
- * Requires at least: 6.8
- * Requires PHP:      7.4
+ * Requires at least: 6.9
+ * Requires PHP:      8.2
  * Requires Plugins:  woocommerce
- * Author:            carmopereira
- * Author URI:        mailto:joao.carmopereira@gmail.com
- * License:           GPL-2.0-or-later
+ * WC requires at least: 8.3
+ * WC tested up to:   9.0
+ * Author:            João Carmo Pereira
+ * Author URI:        https://profiles.wordpress.org/carmopereira/
+ * License:           GPLv2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       carmo-category-product
+ * Domain Path:       /languages
  *
- * @package CreateBlock
+ * @package CarmoCategoryProduct
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
+declare(strict_types=1);
+
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Registers the block(s) metadata from the `blocks-manifest.php` and registers the block type(s)
  * based on the registered block metadata. Behind the scenes, it registers also all assets so they can be enqueued

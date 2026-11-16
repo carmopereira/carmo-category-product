@@ -1,16 +1,13 @@
 === Carmo Category Product ===
-Contributors:      carmopereira
-Author:             carmopereira
-Author URI:         mailto:joao.carmopereira@gmail.com
-Tags:               woocommerce, products, carousel, block, category
-Requires at least:  6.8
-Tested up to:       6.8
-Requires PHP:       7.4
-WC requires at least: 8.3
-WC tested up to:    9.0
+Contributors: carmopereira
+Donate link: https://ko-fi.com/carmopereira
+Tags: woocommerce, products, carousel, block, category
+Requires at least: 6.9
+Tested up to: 7.0
 Stable tag: 0.1.22
-License:            GPL-2.0-or-later
-License URI:        https://www.gnu.org/licenses/gpl-2.0.html
+Requires PHP: 8.2
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 A Gutenberg block that displays a WooCommerce product carousel filtered by category, with configurable columns for desktop and mobile.
 
@@ -37,6 +34,10 @@ Under the hood, the block renders the real WooCommerce `Product Collection` bloc
 **Requirements**
 
 This block requires [WooCommerce](https://woocommerce.com/) to be installed and active, with a version that includes the `Product Collection` block (WooCommerce 8.3 or later).
+
+**Credits**
+
+Built on top of the [Create Block](https://developer.wordpress.org/block-editor/getting-started/devenv/get-started-with-create-block/) tool and the WooCommerce [Product Collection](https://woocommerce.com/document/woocommerce-store-editing/customizing-shop-page-catalog/product-collection-block/) block.
 
 == Installation ==
 
@@ -70,6 +71,11 @@ Yes, in the block settings sidebar, under "Character limit for the description."
 
 == Changelog ==
 
+= 0.1.22 =
+* Margin and padding controls on the carousel block.
+* The title now lines up with the first card.
+* Now requires WordPress 6.9 and PHP 8.2.
+
 = 0.1.17 =
 * Product carousel filtered by WooCommerce category, with configurable columns for desktop/mobile.
 * Card design with full-bleed featured image, name, character-limited description, price, and native add-to-cart button.
@@ -78,8 +84,7 @@ Yes, in the block settings sidebar, under "Character limit for the description."
 * Renders the real WooCommerce Product Collection block tree so the add-to-cart button matches native behaviour exactly.
 * Option to hide the "View cart" link after adding a product to the cart.
 
-== Arbitrary section ==
+== Upgrade Notice ==
 
-= Credits =
-
-Built on top of the [Create Block](https://developer.wordpress.org/block-editor/getting-started/devenv/get-started-with-create-block/) tool and the WooCommerce [Product Collection](https://woocommerce.com/document/woocommerce-store-editing/customizing-shop-page-catalog/product-collection-block/) block.
+= 0.1.22 =
+This version requires WordPress 6.9 and PHP 8.2. Check your server before updating.

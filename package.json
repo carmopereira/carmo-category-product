@@ -1,8 +1,8 @@
 {
 	"name": "carmo-category-product",
 	"version": "0.1.22",
-	"description": "Example block scaffolded with Create Block tool.",
-	"author": "The WordPress Contributors",
+	"description": "WooCommerce product carousel block filtered by category, with configurable columns for desktop and mobile.",
+	"author": "João Carmo Pereira",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {
