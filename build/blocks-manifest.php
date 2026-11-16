@@ -5,7 +5,7 @@ return array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'create-block/carmo-category-product',
-		'version' => '0.1.25',
+		'version' => '0.1.26',
 		'title' => 'Carmo Category Product',
 		'category' => 'widgets',
 		'icon' => 'slides',

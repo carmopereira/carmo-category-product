@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import {
+	Disabled,
 	PanelBody,
 	RangeControl,
 	SelectControl,
@@ -188,10 +189,18 @@ export default function Edit( { attributes, setAttributes } ) {
 				</PanelBody>
 			</InspectorControls>
 			<div { ...blockProps }>
-				<ServerSideRender
-					block="create-block/carmo-category-product"
-					attributes={ attributes }
-				/>
+				{ /*
+				 * The preview is the real front-end markup, full of product
+				 * links and add-to-cart buttons. Left clickable, a click
+				 * navigates the editor canvas iframe away and crashes the
+				 * editor, so the preview is made inert.
+				 */ }
+				<Disabled>
+					<ServerSideRender
+						block="create-block/carmo-category-product"
+						attributes={ attributes }
+					/>
+				</Disabled>
 			</div>
 		</>
 	);

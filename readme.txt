@@ -4,7 +4,7 @@ Donate link: https://ko-fi.com/carmopereira
 Tags: woocommerce, products, carousel, block, category
 Requires at least: 6.9
 Tested up to: 7.0
-Stable tag: 0.1.25
+Stable tag: 0.1.26
 Requires PHP: 8.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -70,6 +70,10 @@ Yes, in the block settings sidebar, under "Character limit for the description."
 2. The block settings sidebar: category, columns, products to show, title tag, description length, and view-cart visibility.
 
 == Changelog ==
+
+= 0.1.26 =
+* With a single column, the card is slightly narrower so the edge of the next card shows and hints that the carousel scrolls.
+* The block preview in the editor is no longer clickable; clicking a product link or button there could crash the editor.
 
 = 0.1.25 =
 * Side padding around the carousel on small screens (the theme root padding, or 1.5rem), so the cards no longer touch the screen edges.

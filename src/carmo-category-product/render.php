@@ -173,9 +173,23 @@ if ( '' === trim( (string) $rendered_collection ) ) {
 	return;
 }
 
+// With a single column the card would fill the whole track and nothing would
+// hint that there is more to the right, so these classes make the card a bit
+// narrower and let the next one peek in.
+$wrapper_classes = 'carmo-carousel';
+if ( $hide_view_cart_link ) {
+	$wrapper_classes .= ' carmo-carousel--hide-view-cart';
+}
+if ( 1 === $columns_mobile ) {
+	$wrapper_classes .= ' carmo-carousel--peek-mobile';
+}
+if ( 1 === $columns_desktop ) {
+	$wrapper_classes .= ' carmo-carousel--peek-desktop';
+}
+
 $wrapper_attributes = get_block_wrapper_attributes(
 	array(
-		'class' => 'carmo-carousel' . ( $hide_view_cart_link ? ' carmo-carousel--hide-view-cart' : '' ),
+		'class' => $wrapper_classes,
 		'style' => sprintf(
 			'--carmo-columns-desktop:%d;--carmo-columns-mobile:%d;',
 			$columns_desktop,

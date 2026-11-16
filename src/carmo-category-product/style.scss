@@ -212,6 +212,22 @@
 		}
 	}
 
+	// Single-column carousels: leave room for a sliver of the next card (the
+	// 3rem minus the 1rem gap), unless there is only one product.
+	--carmo-peek: 3rem;
+
+	@media (max-width: 781px) {
+		&--peek-mobile &__collection ul:not(:has(> li:only-child)) {
+			grid-auto-columns: calc(100% - var(--carmo-peek));
+		}
+	}
+
+	@media (min-width: 782px) {
+		&--peek-desktop &__collection ul:not(:has(> li:only-child)) {
+			grid-auto-columns: calc(100% - var(--carmo-peek));
+		}
+	}
+
 	&--hide-view-cart {
 		// The native Product Button block wraps the "View cart" link in a
 		// <span data-wp-bind--hidden="..."> controlled by the Interactivity
