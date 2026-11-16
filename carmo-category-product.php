@@ -3,7 +3,7 @@
  * Plugin Name:       Carmo Category Product
  * Plugin URI:        https://github.com/carmopereira/carmo-category-product
  * Description:       Adds a WooCommerce product carousel block filtered by category, with configurable columns for desktop and mobile.
- * Version:           0.1.23
+ * Version:           0.1.24
  * Requires at least: 6.9
  * Requires PHP:      8.2
  * Requires Plugins:  woocommerce
@@ -35,3 +35,21 @@ function create_block_carmo_category_product_block_init() {
 	wp_register_block_types_from_metadata_collection( __DIR__ . '/build', __DIR__ . '/build/blocks-manifest.php' );
 }
 add_action( 'init', 'create_block_carmo_category_product_block_init' );
+
+/**
+ * Declares compatibility with WooCommerce features.
+ *
+ * The plugin header carries `WC tested up to`, which makes WooCommerce treat
+ * the plugin as WooCommerce-aware and warn about it unless it says which
+ * features it supports. The block only reads products, so it is compatible
+ * with High-Performance Order Storage and the cart/checkout blocks.
+ */
+function carmo_category_product_declare_wc_compatibility() {
+	if ( ! class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+		return;
+	}
+
+	\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+	\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
+}
+add_action( 'before_woocommerce_init', 'carmo_category_product_declare_wc_compatibility' );
