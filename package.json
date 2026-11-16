@@ -1,6 +1,6 @@
 {
 	"name": "carmo-category-product",
-	"version": "0.1.26",
+	"version": "0.1.27",
 	"description": "WooCommerce product carousel block filtered by category, with configurable columns for desktop and mobile.",
 	"author": "João Carmo Pereira",
 	"license": "GPL-2.0-or-later",

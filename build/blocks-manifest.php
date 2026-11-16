@@ -5,15 +5,36 @@ return array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'create-block/carmo-category-product',
-		'version' => '0.1.26',
+		'version' => '0.1.27',
 		'title' => 'Carmo Category Product',
 		'category' => 'widgets',
 		'icon' => 'slides',
-		'description' => 'Carousel de produtos WooCommerce filtrado por categoria, com número de colunas configurável para desktop e mobile.',
+		'description' => 'Carousel de produtos WooCommerce por categoria ou com produtos escolhidos à mão, com número de colunas configurável para desktop e mobile.',
 		'example' => array(
 			
 		),
 		'attributes' => array(
+			'source' => array(
+				'type' => 'string',
+				'enum' => array(
+					'category',
+					'handpicked'
+				),
+				'default' => 'category'
+			),
+			'productIds' => array(
+				'type' => 'array',
+				'items' => array(
+					'type' => 'number'
+				),
+				'default' => array(
+					
+				)
+			),
+			'customTitle' => array(
+				'type' => 'string',
+				'default' => ''
+			),
 			'categoryId' => array(
 				'type' => 'number',
 				'default' => 0

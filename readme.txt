@@ -4,7 +4,7 @@ Donate link: https://ko-fi.com/carmopereira
 Tags: woocommerce, products, carousel, block, category
 Requires at least: 6.9
 Tested up to: 7.0
-Stable tag: 0.1.26
+Stable tag: 0.1.27
 Requires PHP: 8.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -21,7 +21,7 @@ Under the hood, the block renders the real WooCommerce `Product Collection` bloc
 
 **Features**
 
-* Product category picker (WooCommerce `product_cat` taxonomy)
+* Product category picker (WooCommerce `product_cat` taxonomy), or a hand-picked list of products shown in the order you pick them
 * Configurable number of columns for desktop and mobile, independently
 * Configurable number of products to show
 * Only in-stock products are queried
@@ -70,6 +70,9 @@ Yes, in the block settings sidebar, under "Character limit for the description."
 2. The block settings sidebar: category, columns, products to show, title tag, description length, and view-cart visibility.
 
 == Changelog ==
+
+= 0.1.27 =
+* New product source option: show a hand-picked list of products instead of a category, in the order they were picked, with an optional title.
 
 = 0.1.26 =
 * With a single column, the card is slightly narrower so the edge of the next card shows and hints that the carousel scrolls.

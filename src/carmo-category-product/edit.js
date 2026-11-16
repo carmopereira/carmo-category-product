@@ -5,13 +5,17 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import {
 	Disabled,
+	FormTokenField,
 	PanelBody,
 	RangeControl,
 	SelectControl,
 	Spinner,
 	Notice,
+	TextControl,
 	ToggleControl,
 } from '@wordpress/components';
+import { useState } from '@wordpress/element';
+import { decodeEntities } from '@wordpress/html-entities';
 import { useSelect } from '@wordpress/data';
 import { store as coreStore } from '@wordpress/core-data';
 import ServerSideRender from '@wordpress/server-side-render';
@@ -21,8 +25,39 @@ import ServerSideRender from '@wordpress/server-side-render';
  */
 import './editor.scss';
 
+/**
+ * Token shown in the product picker: the product name plus its ID, so two
+ * products with the same name stay distinguishable and the ID can be read
+ * back from the token.
+ *
+ * @param {Object} product Product record from the REST API.
+ * @return {string} Token label.
+ */
+function getProductToken( product ) {
+	const title = decodeEntities( product?.title?.rendered || '' ).trim();
+
+	return `${ title || __( '(sem nome)', 'carmo-category-product' ) } (#${
+		product.id
+	})`;
+}
+
+/**
+ * Reads the product ID back from a token produced by getProductToken().
+ *
+ * @param {string} token Token label.
+ * @return {number} Product ID, or 0 when the token carries none.
+ */
+function getTokenProductId( token ) {
+	const match = /\(#(\d+)\)$/.exec( String( token ).trim() );
+
+	return match ? Number( match[ 1 ] ) : 0;
+}
+
 export default function Edit( { attributes, setAttributes } ) {
 	const {
+		source,
+		productIds,
+		customTitle,
 		categoryId,
 		columnsDesktop,
 		columnsMobile,
@@ -33,6 +68,50 @@ export default function Edit( { attributes, setAttributes } ) {
 	} = attributes;
 
 	const blockProps = useBlockProps();
+	const isHandPicked = source === 'handpicked';
+	const [ productSearch, setProductSearch ] = useState( '' );
+
+	// Products for the hand-picked picker: the ones already chosen (to show
+	// their names) and the ones matching what is being typed.
+	const { pickedProducts, foundProducts } = useSelect(
+		( select ) => {
+			if ( ! isHandPicked ) {
+				return { pickedProducts: [], foundProducts: [] };
+			}
+
+			const { getEntityRecords } = select( coreStore );
+			const base = { status: 'publish', _fields: 'id,title' };
+
+			return {
+				pickedProducts: productIds.length
+					? getEntityRecords( 'postType', 'product', {
+							...base,
+							include: productIds,
+							per_page: Math.min( productIds.length, 100 ),
+					  } )
+					: [],
+				foundProducts: getEntityRecords( 'postType', 'product', {
+					...base,
+					search: productSearch,
+					per_page: 20,
+				} ),
+			};
+		},
+		[ isHandPicked, productIds, productSearch ]
+	);
+
+	const pickedTokenById = Object.fromEntries(
+		( pickedProducts || [] ).map( ( product ) => [
+			product.id,
+			getProductToken( product ),
+		] )
+	);
+	const productTokens = productIds.map(
+		( id ) => pickedTokenById[ id ] || `(#${ id })`
+	);
+	const productSuggestions = ( foundProducts || [] )
+		.filter( ( product ) => ! productIds.includes( product.id ) )
+		.map( getProductToken );
 
 	const { categories, hasResolvedCategories } = useSelect( ( select ) => {
 		const query = { per_page: -1, hide_empty: false };
@@ -70,47 +149,149 @@ export default function Edit( { attributes, setAttributes } ) {
 						'carmo-category-product'
 					) }
 				>
-					{ ! hasResolvedCategories && <Spinner /> }
+					<SelectControl
+						label={ __(
+							'Origem dos produtos',
+							'carmo-category-product'
+						) }
+						value={ source }
+						options={ [
+							{
+								label: __(
+									'Categoria de produto',
+									'carmo-category-product'
+								),
+								value: 'category',
+							},
+							{
+								label: __(
+									'Produtos escolhidos',
+									'carmo-category-product'
+								),
+								value: 'handpicked',
+							},
+						] }
+						onChange={ ( value ) =>
+							setAttributes( { source: value } )
+						}
+					/>
 
-					{ hasResolvedCategories && categories?.length === 0 && (
-						<Notice status="warning" isDismissible={ false }>
-							{ __(
-								'Não foram encontradas categorias de produto. Confirme que o WooCommerce está ativo.',
-								'carmo-category-product'
-							) }
-						</Notice>
+					{ isHandPicked && (
+						<>
+							<FormTokenField
+								label={ __(
+									'Produtos',
+									'carmo-category-product'
+								) }
+								value={ productTokens }
+								suggestions={ productSuggestions }
+								onInputChange={ setProductSearch }
+								onChange={ ( tokens ) =>
+									setAttributes( {
+										productIds: [
+											...new Set(
+												tokens
+													.map( getTokenProductId )
+													.filter( Boolean )
+											),
+										],
+									} )
+								}
+								__experimentalValidateInput={ ( token ) =>
+									getTokenProductId( token ) > 0
+								}
+								__experimentalExpandOnFocus
+								__experimentalShowHowTo={ false }
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
+							/>
+							<p className="carmo-carousel-editor__help">
+								{ __(
+									'Escreva para procurar produtos. Aparecem no carousel pela ordem em que os escolher.',
+									'carmo-category-product'
+								) }
+							</p>
+							<TextControl
+								label={ __(
+									'Título (opcional)',
+									'carmo-category-product'
+								) }
+								value={ customTitle }
+								onChange={ ( value ) =>
+									setAttributes( { customTitle: value } )
+								}
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
+							/>
+						</>
 					) }
 
-					{ hasResolvedCategories && categories?.length > 0 && (
-						<SelectControl
-							label={ __(
-								'Categoria de produto',
-								'carmo-category-product'
-							) }
-							value={ categoryId }
-							options={ categoryOptions }
-							onChange={ ( value ) =>
-								setAttributes( { categoryId: Number( value ) } )
-							}
-						/>
-					) }
+					{ ! isHandPicked && ! hasResolvedCategories && <Spinner /> }
+
+					{ ! isHandPicked &&
+						hasResolvedCategories &&
+						categories?.length === 0 && (
+							<Notice status="warning" isDismissible={ false }>
+								{ __(
+									'Não foram encontradas categorias de produto. Confirme que o WooCommerce está ativo.',
+									'carmo-category-product'
+								) }
+							</Notice>
+						) }
+
+					{ ! isHandPicked &&
+						hasResolvedCategories &&
+						categories?.length > 0 && (
+							<SelectControl
+								label={ __(
+									'Categoria de produto',
+									'carmo-category-product'
+								) }
+								value={ categoryId }
+								options={ categoryOptions }
+								onChange={ ( value ) =>
+									setAttributes( {
+										categoryId: Number( value ),
+									} )
+								}
+							/>
+						) }
 
 					<SelectControl
 						label={ __(
 							'Elemento do título',
 							'carmo-category-product'
 						) }
-						help={ __(
-							'O título mostra automaticamente o nome da categoria escolhida.',
-							'carmo-category-product'
-						) }
+						help={
+							isHandPicked
+								? __(
+										'Usado quando preenche o título acima.',
+										'carmo-category-product'
+								  )
+								: __(
+										'O título mostra automaticamente o nome da categoria escolhida.',
+										'carmo-category-product'
+								  )
+						}
 						value={ titleTag }
 						options={ [
-							{ label: __( 'H1', 'carmo-category-product' ), value: 'h1' },
-							{ label: __( 'H2', 'carmo-category-product' ), value: 'h2' },
-							{ label: __( 'H3', 'carmo-category-product' ), value: 'h3' },
 							{
-								label: __( 'Span (sem heading)', 'carmo-category-product' ),
+								label: __( 'H1', 'carmo-category-product' ),
+								value: 'h1',
+							},
+							{
+								label: __( 'H2', 'carmo-category-product' ),
+								value: 'h2',
+							},
+							{
+								label: __( 'H3', 'carmo-category-product' ),
+								value: 'h3',
+							},
+							{
+								label: __(
+									'Span (sem heading)',
+									'carmo-category-product'
+								),
 								value: 'span',
 							},
 						] }
@@ -119,18 +300,20 @@ export default function Edit( { attributes, setAttributes } ) {
 						}
 					/>
 
-					<RangeControl
-						label={ __(
-							'Produtos a mostrar',
-							'carmo-category-product'
-						) }
-						value={ productsToShow }
-						onChange={ ( value ) =>
-							setAttributes( { productsToShow: value } )
-						}
-						min={ 2 }
-						max={ 24 }
-					/>
+					{ ! isHandPicked && (
+						<RangeControl
+							label={ __(
+								'Produtos a mostrar',
+								'carmo-category-product'
+							) }
+							value={ productsToShow }
+							onChange={ ( value ) =>
+								setAttributes( { productsToShow: value } )
+							}
+							min={ 2 }
+							max={ 24 }
+						/>
+					) }
 
 					<RangeControl
 						label={ __(

@@ -44,13 +44,34 @@ if ( ! in_array( $title_tag, $allowed_title_tags, true ) ) {
 
 $hide_view_cart_link = ! empty( $attributes['hideViewCartLink'] );
 
-$category_name = '';
+// Product source: a category (default) or a hand-picked list of products.
+$source      = ( isset( $attributes['source'] ) && 'handpicked' === $attributes['source'] ) ? 'handpicked' : 'category';
+$product_ids = array();
+
+if ( 'handpicked' === $source && ! empty( $attributes['productIds'] ) && is_array( $attributes['productIds'] ) ) {
+	$product_ids = array_values( array_unique( array_filter( array_map( 'absint', $attributes['productIds'] ) ) ) );
+}
+
+if ( 'handpicked' === $source && ! $product_ids ) {
+	// Nothing picked yet: say so in the editor preview, show nothing on the site.
+	if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+		echo '<p>' . esc_html__( 'Escolha produtos nas definições do bloco para os mostrar neste carousel.', 'carmo-category-product' ) . '</p>';
+	}
+	return;
+}
+
+$carousel_title = '';
 $tax_query      = array();
+
+if ( 'handpicked' === $source ) {
+	$category_id   = 0;
+	$carousel_title = isset( $attributes['customTitle'] ) ? trim( wp_strip_all_tags( (string) $attributes['customTitle'] ) ) : '';
+}
 
 if ( $category_id ) {
 	$term = get_term( $category_id, 'product_cat' );
 	if ( $term && ! is_wp_error( $term ) ) {
-		$category_name = $term->name;
+		$carousel_title = $term->name;
 		$tax_query      = array( 'product_cat' => array( $category_id ) );
 	}
 }
@@ -127,12 +148,13 @@ $product_template_block = array(
 $product_collection_attrs = array(
 	'queryId'       => 0,
 	'query'         => array(
-		'perPage'                       => $products_to_show,
+		'perPage'                       => $product_ids ? count( $product_ids ) : $products_to_show,
 		'pages'                         => 0,
 		'offset'                        => 0,
 		'postType'                      => 'product',
-		'order'                         => 'desc',
-		'orderBy'                       => 'date',
+		// Hand-picked products keep the order they were picked in.
+		'order'                         => $product_ids ? 'asc' : 'desc',
+		'orderBy'                       => $product_ids ? 'post__in' : 'date',
 		'search'                        => '',
 		'exclude'                       => array(),
 		'inherit'                       => false,
@@ -142,7 +164,7 @@ $product_collection_attrs = array(
 		'woocommerceOnSale'             => false,
 		'woocommerceStockStatus'        => array( 'instock' ),
 		'woocommerceAttributes'         => array(),
-		'woocommerceHandPickedProducts' => array(),
+		'woocommerceHandPickedProducts' => $product_ids,
 		'filterable'                    => false,
 	),
 	'tagName'       => 'div',
@@ -155,7 +177,9 @@ $product_collection_attrs = array(
 	'hideControls'  => array( 'inherit', 'hand-picked', 'filterable' ),
 );
 
-if ( $category_id ) {
+if ( $product_ids ) {
+	$product_collection_attrs['collection'] = 'woocommerce/product-collection/hand-picked';
+} elseif ( $category_id ) {
 	$product_collection_attrs['collection'] = 'woocommerce/product-collection/by-category';
 }
 
@@ -199,9 +223,9 @@ $wrapper_attributes = get_block_wrapper_attributes(
 );
 ?>
 <div <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-	<?php if ( $category_name ) : ?>
+	<?php if ( $carousel_title ) : ?>
 		<<?php echo esc_html( $title_tag ); ?> class="carmo-carousel__title">
-			<?php echo esc_html( $category_name ); ?>
+			<?php echo esc_html( $carousel_title ); ?>
 		</<?php echo esc_html( $title_tag ); ?>>
 	<?php endif; ?>
 	<div class="carmo-carousel__viewport">
