@@ -211,6 +211,27 @@ if ( 1 === $columns_desktop ) {
 	$wrapper_classes .= ' carmo-carousel--peek-desktop';
 }
 
+// Optional subtitle (eyebrow) shown above the title. Its extra CSS classes
+// come from the block settings, so a theme class such as its own eyebrow
+// style can be applied without the plugin knowing about it.
+$eyebrow         = isset( $attributes['eyebrow'] ) ? trim( wp_strip_all_tags( (string) $attributes['eyebrow'] ) ) : '';
+$eyebrow_classes = 'carmo-carousel__eyebrow';
+if ( ! empty( $attributes['eyebrowClass'] ) ) {
+	foreach ( preg_split( '/\s+/', (string) $attributes['eyebrowClass'], -1, PREG_SPLIT_NO_EMPTY ) as $extra_class ) {
+		$extra_class = sanitize_html_class( $extra_class );
+		if ( '' !== $extra_class ) {
+			$eyebrow_classes .= ' ' . $extra_class;
+		}
+	}
+}
+if ( 'carmo-carousel__eyebrow' === $eyebrow_classes ) {
+	$eyebrow_classes .= ' carmo-carousel__eyebrow--default';
+}
+
+// <hgroup> pairs a heading with its subtitle, but it must contain a heading:
+// with a span title (or no title) a plain div wraps them instead.
+$heading_tag = ( $carousel_title && 'span' !== $title_tag ) ? 'hgroup' : 'div';
+
 // Where the cards sit when there are too few to fill the row.
 $cards_align = isset( $attributes['cardsAlign'] ) ? $attributes['cardsAlign'] : 'left';
 if ( in_array( $cards_align, array( 'center', 'right' ), true ) ) {
@@ -229,10 +250,17 @@ $wrapper_attributes = get_block_wrapper_attributes(
 );
 ?>
 <div <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-	<?php if ( $carousel_title ) : ?>
-		<<?php echo esc_html( $title_tag ); ?> class="carmo-carousel__title">
-			<?php echo esc_html( $carousel_title ); ?>
-		</<?php echo esc_html( $title_tag ); ?>>
+	<?php if ( $carousel_title || $eyebrow ) : ?>
+		<<?php echo esc_html( $heading_tag ); ?> class="carmo-carousel__heading">
+			<?php if ( $eyebrow ) : ?>
+				<p class="<?php echo esc_attr( $eyebrow_classes ); ?>"><?php echo esc_html( $eyebrow ); ?></p>
+			<?php endif; ?>
+			<?php if ( $carousel_title ) : ?>
+				<<?php echo esc_html( $title_tag ); ?> class="carmo-carousel__title">
+					<?php echo esc_html( $carousel_title ); ?>
+				</<?php echo esc_html( $title_tag ); ?>>
+			<?php endif; ?>
+		</<?php echo esc_html( $heading_tag ); ?>>
 	<?php endif; ?>
 	<div class="carmo-carousel__viewport">
 		<button type="button" class="carmo-carousel__nav carmo-carousel__nav--prev" aria-label="<?php esc_attr_e( 'Produtos anteriores', 'carmo-category-product' ); ?>">

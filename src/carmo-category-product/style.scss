@@ -10,19 +10,40 @@
  * — an order we control in render.php.
  */
 
+// Subtitle: only spacing by default, with zero specificity (:where) so a
+// theme class still wins. The look below applies only when no theme class
+// was set in the block settings, so none of it leaks into the theme's style.
+:where(.carmo-carousel__eyebrow) {
+	margin: 0 0 0.25rem;
+}
+
+:where(.carmo-carousel__eyebrow--default) {
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	line-height: 1.4;
+	text-transform: uppercase;
+	opacity: 0.75;
+}
+
 .carmo-carousel {
 	position: relative;
 	--carmo-nav-size: 2.25rem;
 	--carmo-viewport-gap: 0.5rem;
 
-	&__title {
-		// Offset by the prev nav button + viewport gap so the title
-		// lines up with the first card.
+	// Subtitle + title. Offset by the prev nav button + viewport gap so they
+	// line up with the first card.
+	&__heading {
 		margin: 0 0 1rem calc(var(--carmo-nav-size) + var(--carmo-viewport-gap));
+	}
+
+	&__title {
+		margin: 0;
 		font-size: 1.5rem;
 		font-weight: 600;
 		line-height: 1.3;
 	}
+
 
 	&__viewport {
 		display: flex;
@@ -348,7 +369,7 @@
 			display: none !important;
 		}
 
-		&__title {
+		&__heading {
 			margin-left: 0;
 		}
 	}

@@ -4,7 +4,7 @@ Donate link: https://ko-fi.com/carmopereira
 Tags: woocommerce, products, carousel, block, category
 Requires at least: 6.9
 Tested up to: 7.0
-Stable tag: 0.1.28
+Stable tag: 0.1.29
 Requires PHP: 8.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -28,6 +28,7 @@ Under the hood, the block renders the real WooCommerce `Product Collection` bloc
 * Short description with a configurable character limit (never cuts a word in half)
 * Title above the carousel, automatically filled with the category name, with a selectable HTML tag (H1, H2, H3, or a plain span)
 * Native WooCommerce "Add to Cart" button (Product Collection / Interactivity API), with an option to hide the "View cart" link that appears after adding a product
+* Optional subtitle above the title, styled by the theme through a CSS class of your choice
 * Cards aligned left, center or right when there are too few to fill the row
 * Touch-friendly horizontal scrolling with scroll-snap, plus optional prev/next buttons
 * Wide and full alignment support
@@ -71,6 +72,9 @@ Yes, in the block settings sidebar, under "Character limit for the description."
 2. The block settings sidebar: category, columns, products to show, title tag, description length, and view-cart visibility.
 
 == Changelog ==
+
+= 0.1.29 =
+* New optional subtitle above the carousel title, with an optional CSS class field so the theme's own style can be applied to it.
 
 = 0.1.28 =
 * New "Cards alignment" option (left, center or right) for when there are too few products to fill the row.

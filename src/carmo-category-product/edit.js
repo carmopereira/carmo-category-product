@@ -74,6 +74,8 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		source,
 		productIds,
 		customTitle,
+		eyebrow,
+		eyebrowClass,
 		categoryId,
 		columnsDesktop,
 		columnsMobile,
@@ -276,6 +278,42 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 								}
 							/>
 						) }
+
+					<TextControl
+						label={ __(
+							'Subtítulo (opcional)',
+							'carmo-category-product'
+						) }
+						help={ __(
+							'Texto curto por cima do título, por exemplo «Produtos».',
+							'carmo-category-product'
+						) }
+						value={ eyebrow }
+						onChange={ ( value ) =>
+							setAttributes( { eyebrow: value } )
+						}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+					/>
+
+					{ !! eyebrow && (
+						<TextControl
+							label={ __(
+								'Classe CSS do subtítulo',
+								'carmo-category-product'
+							) }
+							help={ __(
+								'Opcional. Uma ou mais classes do tema para dar estilo ao subtítulo, separadas por espaços.',
+								'carmo-category-product'
+							) }
+							value={ eyebrowClass }
+							onChange={ ( value ) =>
+								setAttributes( { eyebrowClass: value } )
+							}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
+						/>
+					) }
 
 					<SelectControl
 						label={ __(

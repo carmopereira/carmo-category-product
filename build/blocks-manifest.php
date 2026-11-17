@@ -5,7 +5,7 @@ return array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'create-block/carmo-category-product',
-		'version' => '0.1.28',
+		'version' => '0.1.29',
 		'title' => 'Carmo Category Product',
 		'category' => 'widgets',
 		'icon' => 'slides',
@@ -32,6 +32,14 @@ return array(
 				)
 			),
 			'customTitle' => array(
+				'type' => 'string',
+				'default' => ''
+			),
+			'eyebrow' => array(
+				'type' => 'string',
+				'default' => ''
+			),
+			'eyebrowClass' => array(
 				'type' => 'string',
 				'default' => ''
 			),
