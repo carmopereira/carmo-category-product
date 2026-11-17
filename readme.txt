@@ -73,6 +73,7 @@ Yes, in the block settings sidebar, under "Character limit for the description."
 
 = 0.1.27 =
 * New product source option: show a hand-picked list of products instead of a category, in the order they were picked, with an optional title.
+* The previous/next buttons no longer touch the page edges on desktop; the block uses the theme's root side padding at every screen size.
 
 = 0.1.26 =
 * With a single column, the card is slightly narrower so the edge of the next card shows and hints that the carousel scrolls.

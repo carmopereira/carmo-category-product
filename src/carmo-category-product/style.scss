@@ -239,16 +239,16 @@
 		}
 	}
 
+	// Keep the prev/next buttons (desktop) and the cards (mobile) off the
+	// page edges with the theme's own root padding (1.5rem if the theme has
+	// none). A padding set in the block's spacing controls is inline and
+	// still wins over this default.
+	padding-right: var(--wp--style--root--padding-right, 1.5rem);
+	padding-left: var(--wp--style--root--padding-left, 1.5rem);
+
 	// On small screens the carousel is swiped; the prev/next buttons would
 	// only take width away from the cards.
 	@media (max-width: 781px) {
-		// With the buttons gone the cards would touch the screen edges, so
-		// use the theme's own root padding (1.5rem if the theme has none).
-		// A padding set in the block's spacing controls is inline and
-		// still wins over this default.
-		padding-right: var(--wp--style--root--padding-right, 1.5rem);
-		padding-left: var(--wp--style--root--padding-left, 1.5rem);
-
 		&__nav {
 			display: none !important;
 		}
