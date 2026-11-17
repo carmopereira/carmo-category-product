@@ -45,6 +45,9 @@
 				(100% - (var(--carmo-columns-mobile, 2) - 1) * 1rem) /
 					var(--carmo-columns-mobile, 2)
 			);
+			// Too few products to fill the row: they sit on the left unless
+			// the block's "cards alignment" option says otherwise (below).
+			justify-content: start;
 			gap: 1rem;
 			margin: 0;
 			padding: 0.25rem 0;
@@ -157,6 +160,10 @@
 					margin: 0;
 					font-size: 0.8125rem;
 					opacity: 0.9;
+
+					p {
+						margin: 0;
+					}
 				}
 
 				// 4) price - shares a row with the button when both fit
@@ -210,6 +217,84 @@
 				);
 			}
 		}
+
+		// Desktop with a mouse: the excerpt stays hidden until the card is
+		// hovered (or focused), then a dark overlay fades in, the image
+		// zooms a little and the excerpt slides open. Touch screens and
+		// mobile keep the excerpt always visible.
+		@media (min-width: 782px) and (hover: hover) {
+			ul > li {
+				&::before {
+					content: '';
+					position: absolute;
+					inset: 0;
+					z-index: -1;
+					pointer-events: none;
+					background: rgba(0, 0, 0, 0.35);
+					opacity: 0;
+					transition: opacity 0.3s ease;
+				}
+
+				> :nth-child(1) img {
+					transition: transform 0.5s ease;
+				}
+
+				// By class, not position: a product without a description
+				// has no excerpt, and the price would take its place.
+				// A one-row grid going from 0fr to 1fr animates the excerpt's
+				// real height, so the title and price above it slide up
+				// smoothly instead of jumping.
+				> .carmo-product-card__excerpt {
+					display: grid;
+					grid-template-rows: 0fr;
+					// Cancels the row gap so the hidden excerpt takes no space.
+					margin-top: -0.35rem;
+					opacity: 0;
+					transform: translateY(0.75rem);
+					transition:
+						grid-template-rows 0.4s ease,
+						margin-top 0.4s ease,
+						transform 0.4s ease,
+						opacity 0.3s ease 0.1s;
+
+					> * {
+						min-height: 0;
+						overflow: hidden;
+					}
+				}
+
+				&:hover,
+				&:focus-within {
+					&::before {
+						opacity: 1;
+					}
+
+					> :nth-child(1) img {
+						transform: scale(1.08);
+					}
+
+					> .carmo-product-card__excerpt {
+						grid-template-rows: 1fr;
+						margin-top: 0;
+						opacity: 0.9;
+						transform: none;
+					}
+				}
+			}
+
+			// "Reduce motion" turned on: no zoom. The short slide of the text
+			// stays, since cutting it makes the title jump.
+			@media (prefers-reduced-motion: reduce) {
+				ul > li > :nth-child(1) img {
+					transition: none;
+				}
+
+				ul > li:hover > :nth-child(1) img,
+				ul > li:focus-within > :nth-child(1) img {
+					transform: none;
+				}
+			}
+		}
 	}
 
 	// Single-column carousels: leave room for a sliver of the next card (the
@@ -226,6 +311,16 @@
 		&--peek-desktop &__collection ul:not(:has(> li:only-child)) {
 			grid-auto-columns: calc(100% - var(--carmo-peek));
 		}
+	}
+
+	// Cards alignment option. `safe` falls back to start once the cards
+	// overflow the row, so the first card can still be scrolled to.
+	&--cards-center &__collection ul {
+		justify-content: safe center;
+	}
+
+	&--cards-right &__collection ul {
+		justify-content: safe end;
 	}
 
 	&--hide-view-cart {

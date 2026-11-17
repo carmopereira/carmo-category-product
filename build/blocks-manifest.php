@@ -5,7 +5,7 @@ return array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'create-block/carmo-category-product',
-		'version' => '0.1.27',
+		'version' => '0.1.28',
 		'title' => 'Carmo Category Product',
 		'category' => 'widgets',
 		'icon' => 'slides',
@@ -58,6 +58,15 @@ return array(
 			'titleTag' => array(
 				'type' => 'string',
 				'default' => 'h2'
+			),
+			'cardsAlign' => array(
+				'type' => 'string',
+				'enum' => array(
+					'left',
+					'center',
+					'right'
+				),
+				'default' => 'left'
 			),
 			'hideViewCartLink' => array(
 				'type' => 'boolean',

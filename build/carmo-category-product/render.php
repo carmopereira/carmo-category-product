@@ -211,6 +211,12 @@ if ( 1 === $columns_desktop ) {
 	$wrapper_classes .= ' carmo-carousel--peek-desktop';
 }
 
+// Where the cards sit when there are too few to fill the row.
+$cards_align = isset( $attributes['cardsAlign'] ) ? $attributes['cardsAlign'] : 'left';
+if ( in_array( $cards_align, array( 'center', 'right' ), true ) ) {
+	$wrapper_classes .= ' carmo-carousel--cards-' . $cards_align;
+}
+
 $wrapper_attributes = get_block_wrapper_attributes(
 	array(
 		'class' => $wrapper_classes,

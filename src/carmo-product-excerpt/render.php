@@ -44,8 +44,10 @@ if ( mb_strlen( $description ) > $excerpt_length ) {
 	$description = rtrim( $truncated, " \t\n\r\0\x0B.,;:-" ) . '…';
 }
 
+// The inner <p> lets the carousel animate the excerpt's real height (a
+// grid row going from 0fr to 1fr) when it is revealed on hover.
 printf(
-	'<p %1$s>%2$s</p>',
+	'<div %1$s><p class="carmo-product-card__excerpt-text">%2$s</p></div>',
 	get_block_wrapper_attributes( array( 'class' => 'carmo-product-card__excerpt' ) ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	esc_html( $description )
 );

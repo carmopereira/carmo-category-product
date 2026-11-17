@@ -2,7 +2,11 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import {
+	InspectorControls,
+	useBlockProps,
+	store as blockEditorStore,
+} from '@wordpress/block-editor';
 import {
 	Disabled,
 	FormTokenField,
@@ -53,7 +57,19 @@ function getTokenProductId( token ) {
 	return match ? Number( match[ 1 ] ) : 0;
 }
 
-export default function Edit( { attributes, setAttributes } ) {
+export default function Edit( { attributes, setAttributes, clientId } ) {
+	// This block is a product collection of its own. Inside WooCommerce's
+	// Product Collection block, which hides itself when it has no Product
+	// Template with results, the whole section disappears on the site.
+	const isInsideProductCollection = useSelect(
+		( select ) =>
+			select( blockEditorStore ).getBlockParentsByBlockName(
+				clientId,
+				'woocommerce/product-collection'
+			).length > 0,
+		[ clientId ]
+	);
+
 	const {
 		source,
 		productIds,
@@ -64,6 +80,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		productsToShow,
 		excerptLength,
 		titleTag,
+		cardsAlign,
 		hideViewCartLink,
 	} = attributes;
 
@@ -344,6 +361,35 @@ export default function Edit( { attributes, setAttributes } ) {
 						max={ 3 }
 					/>
 
+					<SelectControl
+						label={ __(
+							'Alinhamento dos cards',
+							'carmo-category-product'
+						) }
+						help={ __(
+							'Onde ficam os cards quando não chegam para encher a linha.',
+							'carmo-category-product'
+						) }
+						value={ cardsAlign }
+						options={ [
+							{
+								label: __( 'Esquerda', 'carmo-category-product' ),
+								value: 'left',
+							},
+							{
+								label: __( 'Centro', 'carmo-category-product' ),
+								value: 'center',
+							},
+							{
+								label: __( 'Direita', 'carmo-category-product' ),
+								value: 'right',
+							},
+						] }
+						onChange={ ( value ) =>
+							setAttributes( { cardsAlign: value } )
+						}
+					/>
+
 					<RangeControl
 						label={ __(
 							'Limite de caracteres da descrição',
@@ -375,6 +421,14 @@ export default function Edit( { attributes, setAttributes } ) {
 				</PanelBody>
 			</InspectorControls>
 			<div { ...blockProps }>
+				{ isInsideProductCollection && (
+					<Notice status="error" isDismissible={ false }>
+						{ __(
+							'Este carousel está dentro de um bloco Product Collection e por isso não aparece no site: o WooCommerce esconde a coleção inteira. Move-o para fora, por exemplo para um Grupo.',
+							'carmo-category-product'
+						) }
+					</Notice>
+				) }
 				{ /*
 				 * The preview is the real front-end markup, full of product
 				 * links and add-to-cart buttons. Left clickable, a click
