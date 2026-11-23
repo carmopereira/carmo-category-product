@@ -4,7 +4,7 @@ Donate link: https://ko-fi.com/carmopereira
 Tags: woocommerce, products, carousel, block, category
 Requires at least: 6.9
 Tested up to: 7.0
-Stable tag: 0.1.29
+Stable tag: 0.1.30
 Requires PHP: 8.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -72,6 +72,9 @@ Yes, in the block settings sidebar, under "Character limit for the description."
 2. The block settings sidebar: category, columns, products to show, title tag, description length, and view-cart visibility.
 
 == Changelog ==
+
+= 0.1.30 =
+* On small screens, a carousel inside a Group with content width no longer doubles the side padding; the cards sit at the theme's root padding from the screen edge.
 
 = 0.1.29 =
 * New optional subtitle above the carousel title, with an optional CSS class field so the theme's own style can be applied to it.

@@ -365,6 +365,15 @@
 	// On small screens the carousel is swiped; the prev/next buttons would
 	// only take width away from the cards.
 	@media (max-width: 781px) {
+		// Inside a container that already applies the root padding (a Group
+		// with "content width" layout), adding ours too doubled the gap to
+		// the screen edge. Full-width blocks are pulled out of that padding
+		// by WordPress, so they keep theirs.
+		:where(.has-global-padding) > &:not(.alignfull) {
+			padding-right: 0;
+			padding-left: 0;
+		}
+
 		&__nav {
 			display: none !important;
 		}
