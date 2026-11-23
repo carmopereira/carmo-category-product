@@ -201,6 +201,9 @@ if ( '' === trim( (string) $rendered_collection ) ) {
 // hint that there is more to the right, so these classes make the card a bit
 // narrower and let the next one peek in.
 $wrapper_classes = 'carmo-carousel';
+if ( ! empty( $attributes['titleUppercase'] ) ) {
+	$wrapper_classes .= ' carmo-carousel--title-uppercase';
+}
 if ( $hide_view_cart_link ) {
 	$wrapper_classes .= ' carmo-carousel--hide-view-cart';
 }

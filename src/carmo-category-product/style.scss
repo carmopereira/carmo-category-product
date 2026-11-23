@@ -344,6 +344,10 @@
 		justify-content: safe end;
 	}
 
+	&--title-uppercase &__title {
+		text-transform: uppercase;
+	}
+
 	&--hide-view-cart {
 		// The native Product Button block wraps the "View cart" link in a
 		// <span data-wp-bind--hidden="..."> controlled by the Interactivity

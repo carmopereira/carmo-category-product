@@ -82,6 +82,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		productsToShow,
 		excerptLength,
 		titleTag,
+		titleUppercase,
 		cardsAlign,
 		hideViewCartLink,
 	} = attributes;
@@ -355,6 +356,17 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 						] }
 						onChange={ ( value ) =>
 							setAttributes( { titleTag: value } )
+						}
+					/>
+
+					<ToggleControl
+						label={ __(
+							'Título em maiúsculas',
+							'carmo-category-product'
+						) }
+						checked={ titleUppercase }
+						onChange={ ( value ) =>
+							setAttributes( { titleUppercase: value } )
 						}
 					/>
 
